@@ -1,4 +1,4 @@
-var APP_KEY = "zl0msi8kqsftxc5";
+var APP_KEY = "vrtpnaothl7h8p1";
 
 var DEFAULT_POST_PATH = "/Apps/Blot";
 if(!localStorage.getItem("wall-post-path")) {
