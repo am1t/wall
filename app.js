@@ -94,14 +94,21 @@ function renderItems(items) {
   });
 }
 
+function validatePath(path) {
+  path = path.startsWith('/') ? path : '/' + path;
+  path += path.endsWith('/') ? '' : '/';
+
+  return path;
+};
+
 function getPostPath() {
-  return localStorage.getItem("wall-post-path");
+  return validatePath(localStorage.getItem("wall-post-path"));
 }
 
 function changePostpath() {
   hidePageSection("post-path-display");
   document.getElementById("post-path-selection").style.display = "inline";
-  document.getElementById("post-path-fixed").value = DEFAULT_POST_PATH + "/";
+  document.getElementById("post-path-input").value = localStorage.getItem("wall-post-path") + "/";
   document.getElementById("post-path-input").focus();
 }
 
@@ -158,7 +165,7 @@ function publishToDropbox() {
     showPageSection("authed");
     var dbx = new Dropbox.Dropbox({ accessToken: getAccessToken() });
     dbx
-    .filesUpload({ path: getPostPath() + '/' + getPostFileName(), 
+    .filesUpload({ path: getPostPath() + getPostFileName(), 
         contents: getContent(), mode: 'add' })
     .then(function (response) {
       console.log('Post file uploaded at ' + response.path_lower);
