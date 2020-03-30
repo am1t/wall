@@ -1,4 +1,4 @@
-var APP_KEY = "zl0msi8kqsftxc5";
+var APP_KEY = "vrtpnaothl7h8p1";
 
 var DEFAULT_POST_PATH = "/Apps/Blot";
 if(!localStorage.getItem("wall-post-path")) {
@@ -33,7 +33,7 @@ function getAccessToken() {
 function logOut() {
   hidePageSection("logout_btn");
   localStorage.setItem("access_token", "");
-  window.location = window.location;
+  resetEditor();
 }
 
 // Parses the url and gets the access token if it is in the urls hash
@@ -161,6 +161,7 @@ function hidePageSection(elementId) {
 function publishToDropbox() {
     // Create an instance of Dropbox with the access token and use it to
     // fetch and render the files in the users root directory.
+    document.getElementById('post-publish-status').innerHTML = 'Your post is getting published';
     hidePageSection("meta-form");
     showPageSection("authed");
     var dbx = new Dropbox.Dropbox({ accessToken: getAccessToken() });
@@ -173,6 +174,7 @@ function publishToDropbox() {
       resetEditor();
     })
     .catch(function(error) {
+      document.getElementById('post-publish-status').innerHTML = 'Failed to publish the post. Please try again!';
       console.error('Failed to upload the post file' + error);
     });
 }
@@ -241,6 +243,7 @@ function autoSave() {
   autosaveTimeout = false;
   var postData = {
     body: editor.getContent(),
+    bodymd: document.getElementById('markdown-content').value
   }
   localforage.setItem('draftpost', postData).then(function(){
     document.getElementById("post-status").innerHTML = "Saved.";
@@ -256,6 +259,7 @@ localforage.getItem('draftpost', function(err,val){
   if(val && val.body) {
     var fileContainer = document.getElementById("file-contents");
     fileContainer.innerHTML = val.body;
+    document.getElementById('markdown-content').value = val.bodymd;
     document.getElementById("post-status").innerHTML = "Opened last saved draft..";
     fileContainer.focus();
   } 
@@ -318,5 +322,8 @@ function openModal() {
 }
 
 function closeModal() {
+  hidePageSection('pre-auth');
+  hidePageSection('authed');
+  hidePageSection('folder');
   document.getElementById('modal').classList.remove('opened');
 }
