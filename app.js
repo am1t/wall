@@ -190,12 +190,13 @@ function publishToMb() {
   document.getElementById('post-publish-status').innerHTML = 'Your post is getting published';
   hidePageSection("meta-form");
   showPageSection("authed");
-  fetch("https://micro.blog/micropub", {
+  fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/micropub", {
     method: "POST",
     body: JSON.stringify({
       h: "entry",
       content: getContent()
     }),
+    mode: 'cors',
     headers: {
       "Authorization": "Bearer " + getAccessToken()
     }
@@ -207,6 +208,10 @@ function publishToMb() {
     //closeModal();
     resetEditor();
     window.location = json.preview;
+  })
+  .catch((err) => {
+    document.getElementById('post-publish-status').innerHTML = 'Failed to publish the post. Please try again!';
+    console.error('Failed to publish the post - ' + err);
   });
 }
 
