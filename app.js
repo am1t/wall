@@ -1,4 +1,4 @@
-var client_id = "https://am1t.github.io/scribe"
+var client_id = "https://am1t.github.io/scribe";
 var markdownEditor = document.querySelector(".markdown");
 var editor = new MediumEditor('.editable',
       { placeholder: false,
