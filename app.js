@@ -272,7 +272,7 @@ localforage.getItem('draftpost', function(err,val){
 });
 
 if(isAuthenticated()) {
-  document.getElementById("publish_btn").innerHTML = "Publish"
+  document.getElementById("publish_btn").innerHTML = "Publish";
   document.getElementById("logout_btn").style.display = "inline";
 }
 
