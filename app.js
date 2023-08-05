@@ -196,7 +196,6 @@ function publishToMb() {
       h: "entry",
       content: getContent()
     }),
-    mode: 'cors',
     headers: {
       "Authorization": "Bearer " + getAccessToken()
     }
