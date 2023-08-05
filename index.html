@@ -19,7 +19,7 @@
       <div class="toolbar-right">
         <button class="btn" id="new_btn" onclick="resetEditor()">New</button>
         <button class="btn" id="export_btn" onclick="saveLocally()">Export</button>
-        <button class="btn" id="publish_btn" onclick="openModal()">Login</button>
+        <button class="btn" id="publish_btn" onclick="openModal()">Sign in</button>
         <button class="btn" id="logout_btn" onclick="logOut()" style="display:none;">Logout</button>
       </div>      
       <div class="clear"></div>
@@ -39,9 +39,10 @@
           </div>
         </div>
         <div id="pre-auth" class="modal-body" style="display:none;">
-          <p>Hello, please connect to Micro.blog to link your files:</p>
-          <a href="" id="authlink" class="button">Authenticate</a>
-          <p class="info">Once authenticated, it will use the access token to publish the post to your blog.</p>
+          <h1>Sign in</h1>
+          <p>You are not signed into Micro.blog yet. Click on the link below to authenticate yourself.</p>
+          <a href="" id="authlink" class="button">Sign in to Micro.blog</a>
+          <p class="info">You will be redirected to Micro.blog for authentication -- Scribe works best **when already logged in**.</p>
         </div>
         <div id="authed" class="modal-body" style="display:none;">
           <p id="post-publish-status"></p>
