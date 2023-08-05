@@ -194,6 +194,7 @@ function publishToMb() {
   var formBody = new URLSearchParams();
   formBody.append("h", "entry");
   formBody.append("content", getPostBody());
+  formBody.append("post-status", "draft");
 
   fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/micropub", {
     method: "POST",
