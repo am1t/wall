@@ -1,10 +1,4 @@
-var APP_KEY = "zl0msi8kqsftxc5";
-
-var DEFAULT_POST_PATH = "/Apps/Blot";
-if(!localStorage.getItem("wall-post-path")) {
-  localStorage.setItem("wall-post-path", DEFAULT_POST_PATH);
-}
-
+var client_id = "https://am1t.github.io/scribe"
 var markdownEditor = document.querySelector(".markdown");
 var editor = new MediumEditor('.editable',
       { placeholder: false,
@@ -22,9 +16,10 @@ function getAccessToken() {
     return getAccessTokenFromLocalStorage();
   }
 
-  if (getAccessTokenFromUrl()) {
-    localStorage.setItem("access_token", getAccessTokenFromUrl());
-    return (window.location = window.location.href.split("?")[0]);
+  access_token = getAccessTokenByOAuth()
+  if (access_token) {
+    localStorage.setItem("access_token", access_token);
+    return access_token;
   }
 
   return null;
@@ -37,10 +32,34 @@ function logOut() {
 }
 
 // Parses the url and gets the access token if it is in the urls hash
-function getAccessTokenFromUrl() {
+function getAccessTokenByOAuth() {
+  var access_token = ""
   const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('code');
-  return token;
+  const code = urlParams.get('code');
+  var formBody = new URLSearchParams();
+  formBody.append("code", code);
+  formBody.append("client_id", client_id);
+  formBody.append("grant_type", "authorization_code");
+
+  fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/indieauth/token", {
+    method: "POST",
+    body: formBody.toString(),
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+      "Accept": "application/json"
+    }
+  })
+  .then((response) => response.json())
+  .then((json) => {
+    console.log("Logged in as " + json.profile.name)
+    access_token = json.access_token;
+  })
+  .catch((err) => {
+    document.getElementById('post-publish-status').innerHTML = 'Failed to fetch access token. Please try again!';
+    console.error('Failed to fetch access token - ' + err);
+  });
+
+  return access_token;
 }
 
 function getAccessTokenFromLocalStorage() {
@@ -107,21 +126,6 @@ function getPostPath() {
   return validatePath(localStorage.getItem("wall-post-path"));
 }
 
-function changePostpath() {
-  hidePageSection("post-path-display");
-  document.getElementById("post-path-selection").style.display = "inline";
-  document.getElementById("post-path-fixed").value = DEFAULT_POST_PATH + "/";
-  document.getElementById("post-path-input").focus();
-}
-
-function savePostpath() {
-  localStorage.setItem("wall-post-path", DEFAULT_POST_PATH + "/" 
-        + document.getElementById('post-path-input').value);
-  document.getElementById('post-path').innerHTML = getPostPath();
-  document.getElementById("post-path-display").style.display = "inline";
-  hidePageSection("post-path-selection");
-}
-
 function getPostFileName() {
   return Date.now() + '.md'
 }
@@ -143,7 +147,7 @@ function getPostMetadata() {
 }
 
 function getPostBody() {
-  return encodeURIComponent(document.getElementById('markdown-content').value); 
+  return document.getElementById('markdown-content').value; 
 }
 
 function getContent() {
@@ -161,27 +165,6 @@ function showPageSection(elementId) {
 
 function hidePageSection(elementId) {
   document.getElementById(elementId).style.display = "none";
-}
-
-function publishToDropbox() {
-    // Create an instance of Dropbox with the access token and use it to
-    // fetch and render the files in the users root directory.
-    document.getElementById('post-publish-status').innerHTML = 'Your post is getting published';
-    hidePageSection("meta-form");
-    showPageSection("authed");
-    var dbx = new Dropbox.Dropbox({ accessToken: getAccessToken() });
-    dbx
-    .filesUpload({ path: getPostPath() + getPostFileName(),
-        contents: getContent(), mode: 'add' })
-    .then(function (response) {
-      console.log('Post file uploaded at ' + response.path_lower);
-      closeModal();
-      resetEditor();
-    })
-    .catch(function(error) {
-      document.getElementById('post-publish-status').innerHTML = 'Failed to publish the post. Please try again!';
-      console.error('Failed to upload the post file' + error);
-    });
 }
 
 function publishToMb() {
