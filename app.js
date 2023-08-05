@@ -143,7 +143,7 @@ function getPostMetadata() {
 }
 
 function getPostBody() {
-  return document.getElementById('markdown-content').value; 
+  return encodeURIComponent(document.getElementById('markdown-content').value); 
 }
 
 function getContent() {
@@ -191,13 +191,13 @@ function publishToMb() {
   hidePageSection("meta-form");
   showPageSection("authed");
 
-  var formBody = new FormData();
-  formBody.set("h", "entry");
-  formBody.set("content", getPostBody());
+  var formBody = new URLSearchParams();
+  formBody.append("h", "entry");
+  formBody.append("content", getPostBody());
 
   fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/micropub", {
     method: "POST",
-    body: formBody,
+    body: formBody.toString(),
     headers: {
       "Authorization": "Bearer " + getAccessToken()
     }
