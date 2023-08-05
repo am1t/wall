@@ -200,7 +200,8 @@ function publishToMb() {
     method: "POST",
     body: formBody.toString(),
     headers: {
-      "Authorization": "Bearer " + getAccessToken()
+      "Authorization": "Bearer " + getAccessToken(),
+      "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
     }
   })
   .then((response) => response.json())
