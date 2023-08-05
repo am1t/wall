@@ -27,6 +27,7 @@ function getAccessToken() {
 
 function logOut() {
   hidePageSection("logout_btn");
+  document.getElementById("publish_btn").innerHTML = "Sign in";
   localStorage.setItem("access_token", "");
   resetEditor();
 }
@@ -302,6 +303,8 @@ function resetEditor() {
   hidePageSection('pre-auth');
   editor.setContent('');
   localforage.setItem('draftpost', {})
+
+  document.getElementById("file-contents").focus();
 }
 
 // Add overlay modal for capturing title/tags
