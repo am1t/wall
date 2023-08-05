@@ -24,7 +24,7 @@ function getAccessToken() {
 
   if (getAccessTokenFromUrl()) {
     localStorage.setItem("access_token", getAccessTokenFromUrl());
-    return (window.location = window.location.href.split("#")[0]);
+    return (window.location = window.location.href.split("?")[0]);
   }
 
   return null;
@@ -38,7 +38,9 @@ function logOut() {
 
 // Parses the url and gets the access token if it is in the urls hash
 function getAccessTokenFromUrl() {
-  return parseQueryString(window.location.hash).access_token;
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('code');
+  return token;
 }
 
 function getAccessTokenFromLocalStorage() {
@@ -182,6 +184,32 @@ function publishToDropbox() {
     });
 }
 
+function publishToMb() {
+  // Create an instance of Dropbox with the access token and use it to
+  // fetch and render the files in the users root directory.
+  document.getElementById('post-publish-status').innerHTML = 'Your post is getting published';
+  hidePageSection("meta-form");
+  showPageSection("authed");
+  fetch("https://micro.blog/micropub", {
+    method: "POST",
+    body: JSON.stringify({
+      h: "entry",
+      content: getContent()
+    }),
+    headers: {
+      "Authorization": "Bearer " + getAccessToken()
+    }
+  })
+  .then((response) => response.json())
+  .then((json) => {
+    console.log(json);
+    console.log('Post available at ' + json.url);
+    //closeModal();
+    resetEditor();
+    window.location = json.preview;
+  });
+}
+
 // Used to extract a user's access token from a URL hash
 function parseQueryString(str) {
   var ret = Object.create(null);
@@ -318,8 +346,10 @@ function openModal() {
     // Set the login anchors href using dbx.getAuthenticationUrl()
     // clientID === APP_KEY per
     // https://www.dropboxforum.com/t5/API-Support-Feedback/Javascript-SDK-CLIENT-ID/td-p/217323
-    var dbx = new Dropbox.Dropbox({ clientId: APP_KEY, fetch: fetch });
-    var authUrl = dbx.getAuthenticationUrl(window.location);
+    //var dbx = new Dropbox.Dropbox({ clientId: APP_KEY, fetch: fetch });
+    //var authUrl = dbx.getAuthenticationUrl(window.location);
+
+    var authUrl = "https://micro.blog/indieauth/auth?client_id=https://am1t.github.io/scribe&scope=create&state=abcd1234&response_type=code&redirect_uri=https://am1t.github.io/scribe"
     document.getElementById("authlink").href = authUrl;
   }    
 }
