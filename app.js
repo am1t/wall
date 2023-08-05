@@ -194,7 +194,7 @@ function publishToMb() {
     method: "POST",
     body: JSON.stringify({
       h: "entry",
-      content: getContent()
+      content: getPostBody()
     }),
     headers: {
       "Authorization": "Bearer " + getAccessToken()
