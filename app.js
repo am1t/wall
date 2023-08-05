@@ -208,8 +208,6 @@ function publishToMb() {
       redirectUrl = json.url;
     }
     setTimeout(function() {
-      closeModal();
-      resetEditor();
       window.location = redirectUrl;
     }, 5000);
   })
