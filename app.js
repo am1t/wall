@@ -49,6 +49,8 @@ function fetchAccessTokenByOAuth() {
     console.log("Logged in as " + json.profile.name);
     access_token = json.access_token;
     localStorage.setItem("access_token", access_token);
+    closeModal();
+    resetEditor();
     window.location = window.location.href.split("?")[0];
   })
   .catch((err) => {
@@ -207,6 +209,8 @@ function publishToMb() {
     } else {
       redirectUrl = json.url;
     }
+    closeModal();
+    resetEditor();
     window.location = redirectUrl;
   })
   .catch((err) => {
