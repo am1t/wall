@@ -19,7 +19,7 @@ function getAccessToken() {
   fetchAccessTokenByOAuth()
   access_token = getAccessTokenFromLocalStorage()
   if (access_token) {
-    return access_token;
+    return (window.location = window.location.href.split("?")[0]);
   }
 
   return null;
