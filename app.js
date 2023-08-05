@@ -300,13 +300,8 @@ function saveLocally() {
 // Reset editor to new - remove local browser draft 
 function resetEditor() {
   hidePageSection('pre-auth');
-  hidePageSection('authed');
-  hidePageSection('folder');
   editor.setContent('');
   localforage.setItem('draftpost', {})
-  document.getElementById("file-contents").focus();
-
-  window.location.replace("/");
 }
 
 // Add overlay modal for capturing title/tags
