@@ -192,10 +192,10 @@ function publishToMb() {
   showPageSection("authed");
   fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/micropub", {
     method: "POST",
-    body: JSON.stringify({
+    body: {
       h: "entry",
       content: getPostBody()
-    }),
+    },
     headers: {
       "Authorization": "Bearer " + getAccessToken()
     }
