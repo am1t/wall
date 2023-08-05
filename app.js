@@ -210,9 +210,9 @@ function publishToMb() {
     resetEditor();
     document.getElementById('post-publish-status').innerHTML = 'Published post successfully, redirecting...';
     if(isDraft){
-      redirectUrl = json.url;
-    } else {
       redirectUrl = json.preview;
+    } else {
+      redirectUrl = json.url;
     }
     setTimeout(function() {
       window.location = redirectUrl;
