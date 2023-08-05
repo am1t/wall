@@ -171,14 +171,28 @@ function hidePageSection(elementId) {
 function publishToMb() {
   // Create an instance of Dropbox with the access token and use it to
   // fetch and render the files in the users root directory.
-  document.getElementById('post-publish-status').innerHTML = 'Your post is getting published';
+  document.getElementById('post-publish-status').innerHTML = 'Publishing your post to Micro.blog';
+
+  var title = document.getElementById('post-title').value;
+  var tags = document.getElementById('post-tags').value;
+  var isDraft = document.getElementById('post-draft').checked;
+  var redirectUrl = "";
+
   hidePageSection("meta-form");
   showPageSection("authed");
 
   var formBody = new URLSearchParams();
   formBody.append("h", "entry");
   formBody.append("content", getPostBody());
-  formBody.append("post-status", "draft");
+  if(title){
+    formBody.append("name", title);
+  }
+  if(tags){
+    formBody.append("category[]",tags);
+  }
+  if(isDraft){
+    formBody.append("post-status", "draft");
+  }
 
   fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/micropub", {
     method: "POST",
@@ -194,51 +208,20 @@ function publishToMb() {
     console.log('Post available at ' + json.url);
     //closeModal();
     resetEditor();
-    window.location = json.preview;
+    document.getElementById('post-publish-status').innerHTML = 'Published post successfully, redirecting...';
+    if(isDraft){
+      redirectUrl = json.url;
+    } else {
+      redirectUrl = json.preview;
+    }
+    setTimeout(function() {
+      window.location = redirectUrl;
+    }, 5000);
   })
   .catch((err) => {
     document.getElementById('post-publish-status').innerHTML = 'Failed to publish the post. Please try again!';
     console.error('Failed to publish the post - ' + err);
   });
-}
-
-// Used to extract a user's access token from a URL hash
-function parseQueryString(str) {
-  var ret = Object.create(null);
-
-  if (typeof str !== "string") {
-    return ret;
-  }
-
-  str = str.trim().replace(/^(\?|#|&)/, "");
-
-  if (!str) {
-    return ret;
-  }
-
-  str.split("&").forEach(function(param) {
-    var parts = param.replace(/\+/g, " ").split("=");
-    // Firefox (pre 40) decodes `%3D` to `=`
-    // https://github.com/sindresorhus/query-string/pull/37
-    var key = parts.shift();
-    var val = parts.length > 0 ? parts.join("=") : undefined;
-
-    key = decodeURIComponent(key);
-
-    // missing `=` should be `null`:
-    // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-    val = val === undefined ? null : decodeURIComponent(val);
-
-    if (ret[key] === undefined) {
-      ret[key] = val;
-    } else if (Array.isArray(ret[key])) {
-      ret[key].push(val);
-    } else {
-      ret[key] = [ret[key], val];
-    }
-  });
-
-  return ret;
 }
 
 renderFile();
@@ -289,6 +272,7 @@ localforage.getItem('draftpost', function(err,val){
 });
 
 if(isAuthenticated()) {
+  document.getElementById("publish_btn").innerHTML = "Publish"
   document.getElementById("logout_btn").style.display = "inline";
 }
 
@@ -301,7 +285,7 @@ function saveLocally() {
   var textFileAsBlob = new Blob([ textToWrite ], { type: 'text/plain' });
   
   var textToSaveAsURL = window.URL.createObjectURL(textFileAsBlob);
-  var fileNameToSaveAs = "test-post.md";
+  var fileNameToSaveAs = "scribe-post.md";
 
   var downloadLink = document.createElement("a");
   downloadLink.download = fileNameToSaveAs;
@@ -329,18 +313,11 @@ function resetEditor() {
 function openModal() {
   document.getElementById('modal').classList.add('opened');
   if (isAuthenticated()) {
-    document.getElementById('post-path').innerHTML = getPostPath();
     showPageSection("meta-form");
     document.getElementById('post-title').focus();
   } else {
     hidePageSection("meta-form");
     showPageSection("pre-auth");
-    // Set the login anchors href using dbx.getAuthenticationUrl()
-    // clientID === APP_KEY per
-    // https://www.dropboxforum.com/t5/API-Support-Feedback/Javascript-SDK-CLIENT-ID/td-p/217323
-    //var dbx = new Dropbox.Dropbox({ clientId: APP_KEY, fetch: fetch });
-    //var authUrl = dbx.getAuthenticationUrl(window.location);
-
     var authUrl = "https://micro.blog/indieauth/auth?client_id=https://am1t.github.io/scribe&scope=create&state=abcd1234&response_type=code&redirect_uri=https://am1t.github.io/scribe"
     document.getElementById("authlink").href = authUrl;
   }    

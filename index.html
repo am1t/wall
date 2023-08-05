@@ -18,7 +18,7 @@
       <div class="toolbar-right">
         <button class="btn" id="new_btn" onclick="resetEditor()">New</button>
         <button class="btn" id="export_btn" onclick="saveLocally()">Export</button>
-        <button class="btn" id="publish_btn" onclick="openModal()">Publish</button>
+        <button class="btn" id="publish_btn" onclick="openModal()">Login</button>
         <button class="btn" id="logout_btn" onclick="logOut()" style="display:none;">Logout</button>
       </div>      
       <div class="clear"></div>
@@ -30,29 +30,21 @@
       <div class="modal-dialog">
         <a href="#" class="btn-close closemodal" aria-hidden="true" onclick="closeModal()">&times;</a>
         <div id="meta-form" class="modal-body">
-          <input type="text" name="title" id="post-title" placeholder="Title" size="400" /><br>
-          <input type="text" name="tags" id="post-tags" placeholder="Tags, comma separated" size="400" />
+          <input type="text" name="title" id="post-title" placeholder="Title for the post" size="400" /><br>
+          <input type="text" name="tags" id="post-tags" placeholder="Tags, a single tag only" size="400" />
+          <input type="checkbox" name="draft" id="post-draft"><label for="draft" id="post-draft">Publish as draft</label>
           <div class="modal-footer">
-            <p class="post-info">Post will be published to your Micro.blog.</p>
             <a href="#" class="publishBtn" onclick="publishToMb()">Publish now</a>
           </div>
         </div>
         <div id="pre-auth" class="modal-body" style="display:none;">
           <p>Hello, please connect to Micro.blog to link your files:</p>
           <a href="" id="authlink" class="button">Authenticate</a>
-          <p class="info">Once authenticated, it will use the access token to add posts to blog.</p>
+          <p class="info">Once authenticated, it will use the access token to publish the post to your blog.</p>
         </div>
         <div id="authed" class="modal-body" style="display:none;">
           <p id="post-publish-status"></p>
           <hr>
-          <div id="folder" style="display:none;">
-            <p>Below are the contents of directory:</p>
-            <ul id="files"></ul>
-          </div>
-          <div id="file" style="display:none;"></div>
-          <div class="modal-footer">
-            <a href="#" class="publishBtn" onclick="closeModal()">Cancel</a>
-          </div>
         </div>
       </div>
     </div>

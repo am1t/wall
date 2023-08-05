@@ -218,3 +218,10 @@ input[type="text"]#post-path-input{
     padding: 0px;
     margin:0 0 0 -15px;
 }
+
+#post-draft {
+    width: auto;
+    margin-right: 20px;
+    font-size: 16px;
+    color: #888;
+}
