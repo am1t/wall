@@ -208,7 +208,6 @@ function publishToMb() {
     console.log(json);
     console.log('Post available at ' + json.url);
     //closeModal();
-    resetEditor();
     document.getElementById('post-publish-status').innerHTML = 'Published post successfully, redirecting...';
     if(isDraft){
       redirectUrl = json.preview;
@@ -216,7 +215,8 @@ function publishToMb() {
       redirectUrl = json.url;
     }
     setTimeout(function() {
-      window.location = redirectUrl;
+      resetEditor();
+      window.location.replace(redirectUrl);
     }, 5000);
   })
   .catch((err) => {
@@ -301,10 +301,12 @@ function saveLocally() {
 // Reset editor to new - remove local browser draft 
 function resetEditor() {
   hidePageSection('pre-auth');
+  hidePageSection('authed');
   editor.setContent('');
   localforage.setItem('draftpost', {})
 
   document.getElementById("file-contents").focus();
+  window.location.replace("/");
 }
 
 // Add overlay modal for capturing title/tags
