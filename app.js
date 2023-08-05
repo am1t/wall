@@ -190,12 +190,14 @@ function publishToMb() {
   document.getElementById('post-publish-status').innerHTML = 'Your post is getting published';
   hidePageSection("meta-form");
   showPageSection("authed");
+
+  var formBody = new FormData();
+  formBody.set("h", "entry");
+  formBody.set("content", getPostBody());
+
   fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/micropub", {
     method: "POST",
-    body: {
-      h: "entry",
-      content: getPostBody()
-    },
+    body: formBody,
     headers: {
       "Authorization": "Bearer " + getAccessToken()
     }
