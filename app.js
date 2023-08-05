@@ -16,8 +16,8 @@ function getAccessToken() {
     return getAccessTokenFromLocalStorage();
   }
 
-  fetchAccessTokenByOAuth()
-  access_token = getAccessTokenFromLocalStorage()
+  fetchAccessTokenByOAuth();
+  access_token = getAccessTokenFromLocalStorage();
   if (access_token) {
     return (window.location = window.location.href.split("?")[0]);
   }
@@ -27,14 +27,13 @@ function getAccessToken() {
 
 function logOut() {
   hidePageSection("logout_btn");
-  document.getElementById("publish_btn").innerHTML = "Sign in";
   localStorage.setItem("access_token", "");
   resetEditor();
 }
 
 // Parses the url and gets the access token if it is in the urls hash
 function fetchAccessTokenByOAuth() {
-  var access_token = ""
+  var access_token = "";
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
   var formBody = new URLSearchParams();
@@ -52,7 +51,7 @@ function fetchAccessTokenByOAuth() {
   })
   .then((response) => response.json())
   .then((json) => {
-    console.log("Logged in as " + json.profile.name)
+    console.log("Logged in as " + json.profile.name);
     access_token = json.access_token;
     localStorage.setItem("access_token", access_token);
   })
@@ -129,7 +128,7 @@ function getPostPath() {
 }
 
 function getPostFileName() {
-  return Date.now() + '.md'
+  return Date.now() + '.md';
 }
 
 function getPostMetadata() {
@@ -205,9 +204,7 @@ function publishToMb() {
   })
   .then((response) => response.json())
   .then((json) => {
-    console.log(json);
     console.log('Post available at ' + json.url);
-    //closeModal();
     document.getElementById('post-publish-status').innerHTML = 'Published post successfully, redirecting...';
     if(isDraft){
       redirectUrl = json.preview;
@@ -215,8 +212,9 @@ function publishToMb() {
       redirectUrl = json.url;
     }
     setTimeout(function() {
+      closeModal();
       resetEditor();
-      window.location.replace(redirectUrl);
+      window.location = redirectUrl;
     }, 5000);
   })
   .catch((err) => {
@@ -273,7 +271,6 @@ localforage.getItem('draftpost', function(err,val){
 });
 
 if(isAuthenticated()) {
-  document.getElementById("publish_btn").innerHTML = "Publish";
   document.getElementById("logout_btn").style.display = "inline";
 }
 
@@ -303,10 +300,10 @@ function resetEditor() {
   hidePageSection('pre-auth');
   hidePageSection('authed');
   editor.setContent('');
-  localforage.setItem('draftpost', {})
+  localforage.setItem('draftpost', {});
 
   document.getElementById("file-contents").focus();
-  window.location.replace("/");
+  window.location.replace("/scribe");
 }
 
 // Add overlay modal for capturing title/tags

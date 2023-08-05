@@ -19,7 +19,7 @@
       <div class="toolbar-right">
         <button class="btn" id="new_btn" onclick="resetEditor()">New</button>
         <button class="btn" id="export_btn" onclick="saveLocally()">Export</button>
-        <button class="btn" id="publish_btn" onclick="openModal()">Sign in</button>
+        <button class="btn" id="publish_btn" onclick="openModal()">Publish</button>
         <button class="btn" id="logout_btn" onclick="logOut()" style="display:none;">Logout</button>
       </div>      
       <div class="clear"></div>
@@ -47,6 +47,9 @@
         <div id="authed" class="modal-body" style="display:none;">
           <p id="post-publish-status"></p>
           <hr>
+          <div class="modal-footer">
+            <a href="#" class="publishBtn" onclick="closeModal()">Cancel</a>
+          </div>
         </div>
       </div>
     </div>
