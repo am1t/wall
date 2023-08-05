@@ -16,9 +16,9 @@ function getAccessToken() {
     return getAccessTokenFromLocalStorage();
   }
 
-  access_token = getAccessTokenByOAuth()
+  fetchAccessTokenByOAuth()
+  access_token = getAccessTokenFromLocalStorage()
   if (access_token) {
-    localStorage.setItem("access_token", access_token);
     return access_token;
   }
 
@@ -32,7 +32,7 @@ function logOut() {
 }
 
 // Parses the url and gets the access token if it is in the urls hash
-function getAccessTokenByOAuth() {
+function fetchAccessTokenByOAuth() {
   var access_token = ""
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
@@ -53,6 +53,7 @@ function getAccessTokenByOAuth() {
   .then((json) => {
     console.log("Logged in as " + json.profile.name)
     access_token = json.access_token;
+    localStorage.setItem("access_token", access_token);
   })
   .catch((err) => {
     document.getElementById('post-publish-status').innerHTML = 'Failed to fetch access token. Please try again!';
