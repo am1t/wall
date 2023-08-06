@@ -1,15 +1,3 @@
-var markdownEditor = document.querySelector(".markdown");
-var editor = new MediumEditor('.editable',
-      { placeholder: false,
-        toolbar: {
-          buttons: ['bold', 'italic', 'underline', 'anchor', 'h1', 'h2', 'quote', 'orderedlist', 'unorderedlist']
-        },
-        extensions: {
-            markdown: new MeMarkdown(function (md) {
-              markdownEditor.textContent = md;
-    })}
-  });
-
 function getAccessToken() {
   if (getAccessTokenFromLocalStorage()) {
     return getAccessTokenFromLocalStorage();
@@ -239,3 +227,15 @@ function closeModal() {
   hidePageSection('authed');
   document.getElementById('modal').classList.remove('opened');
 }
+
+var markdownEditor = document.querySelector(".markdown");
+var editor = new MediumEditor('.editable',
+      { placeholder: false,
+        toolbar: {
+          buttons: ['bold', 'italic', 'underline', 'anchor', 'h1', 'h2', 'quote', 'orderedlist', 'unorderedlist']
+        },
+        extensions: {
+            markdown: new MeMarkdown(function (md) {
+              markdownEditor.textContent = md;
+    })}
+});
