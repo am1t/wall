@@ -36,27 +36,27 @@ function fetchAccessTokenByOAuth() {
   formBody.append("client_id", client_id);
   formBody.append("grant_type", "authorization_code");
 
-  fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/indieauth/token", {
-    method: "POST",
-    body: formBody.toString(),
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-      "Accept": "application/json"
+  async () => {
+    try {
+    	const response = await fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/indieauth/token", {
+        method: "POST",
+        body: formBody.toString(),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+          "Accept": "application/json"
+        }
+      });
+    	const json = await response.json();
+      console.log("Logged in as " + json.profile.name);
+      access_token = json.access_token;
+      localStorage.setItem("access_token", access_token);
+      closeModal();
+      resetEditor();
+      window.location = window.location.href.split("?")[0];
+    } catch (err) {
+      document.getElementById('post-publish-status').innerHTML = 'Failed to fetch access token. Please try again!';
+      console.error('Failed to fetch access token - ' + err);
     }
-  })
-  .then((response) => response.json())
-  .then((json) => {
-    console.log("Logged in as " + json.profile.name);
-    access_token = json.access_token;
-    localStorage.setItem("access_token", access_token);
-    closeModal();
-    resetEditor();
-    window.location = window.location.href.split("?")[0];
-  })
-  .catch((err) => {
-    document.getElementById('post-publish-status').innerHTML = 'Failed to fetch access token. Please try again!';
-    console.error('Failed to fetch access token - ' + err);
-  });
 
   return access_token;
 }
