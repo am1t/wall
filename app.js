@@ -15,8 +15,17 @@ function getAccessToken() {
     return getAccessTokenFromLocalStorage();
   }
 
-  fetchAccessTokenByOAuth();
+  if (getAccessCodeFromUrl()) {
+    fetchAccessTokenByOAuth();
+    return (window.location = window.location.href.split("?")[0]);
+  }
+
   return null;
+}
+
+// Parses the url and gets the access token if it is in the urls hash
+function getAccessCodeFromUrl() {
+  return parseQueryString(window.location.hash).access_token;
 }
 
 function logOut() {
@@ -46,7 +55,6 @@ const fetchAccessTokenByOAuth = async () => {
       console.log("Logged in as " + json.profile.name);
       localStorage.setItem("access_token", json.access_token);
       closeModal();
-      window.location = window.location.href.split("?")[0];
     } catch (err) {
       document.getElementById('post-publish-status').innerHTML = 'Failed to fetch access token. Please try again!';
       console.error('Failed to fetch access token - ' + err);
