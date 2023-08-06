@@ -168,8 +168,8 @@ localforage.getItem('draftpost', function(err,val){
     fileContainer.innerHTML = val.body;
     document.getElementById('markdown-content').value = val.bodymd;
     document.getElementById("post-status").innerHTML = "Opened last saved draft..";
-    fileContainer.focus();
   } 
+  fileContainer.focus();
 });
 
 if(isAuthenticated()) {
