@@ -68,7 +68,7 @@ function getAccessTokenFromLocalStorage() {
 // If the user was just redirected from authenticating, the urls hash will
 // contain the access token.
 function isAuthenticated() {
-  return !!getAccessToken();
+  return !!getAccessTokenFromLocalStorage();
 }
 
 // Render a file to #file
@@ -196,7 +196,7 @@ function publishToMb() {
     method: "POST",
     body: formBody.toString(),
     headers: {
-      "Authorization": "Bearer " + getAccessToken(),
+      "Authorization": "Bearer " + getAccessTokenFromLocalStorage(),
       "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
     }
   })
@@ -268,6 +268,8 @@ localforage.getItem('draftpost', function(err,val){
 
 if(isAuthenticated()) {
   document.getElementById("logout_btn").style.display = "inline";
+} else {
+  fetchAccessTokenByOAuth();
 }
 
 // Export the content in markdown and save to local
