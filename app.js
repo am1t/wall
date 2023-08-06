@@ -17,7 +17,7 @@ function getAccessToken() {
   }
 
   fetchAccessTokenByOAuth();
-  return true;
+  return null;
 }
 
 function logOut() {
