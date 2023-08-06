@@ -175,8 +175,8 @@ editor.on(document.getElementById('file-contents'), 'input', function(){
 
 // Restore draft posts from local browser storage
 localforage.getItem('draftpost', function(err,val){
+  var fileContainer = document.getElementById("file-contents");
   if(val && val.body) {
-    var fileContainer = document.getElementById("file-contents");
     fileContainer.innerHTML = val.body;
     document.getElementById('markdown-content').value = val.bodymd;
     document.getElementById("post-status").innerHTML = "Opened last saved draft..";
