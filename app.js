@@ -27,17 +27,14 @@ function logOut() {
 }
 
 // Parses the url and gets the access token if it is in the urls hash
-function fetchAccessTokenByOAuth() {
-  var access_token = "";
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get('code');
-  var formBody = new URLSearchParams();
-  formBody.append("code", code);
-  formBody.append("client_id", client_id);
-  formBody.append("grant_type", "authorization_code");
-
-  async () => {
-    try {
+const fetchAccessTokenByOAuth = async () => {
+  try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      var formBody = new URLSearchParams();
+      formBody.append("code", code);
+      formBody.append("client_id", client_id);
+      formBody.append("grant_type", "authorization_code");
     	const response = await fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/indieauth/token", {
         method: "POST",
         body: formBody.toString(),
@@ -48,8 +45,7 @@ function fetchAccessTokenByOAuth() {
       });
     	const json = await response.json();
       console.log("Logged in as " + json.profile.name);
-      access_token = json.access_token;
-      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("access_token", json.access_token);
       closeModal();
       resetEditor();
       window.location = window.location.href.split("?")[0];
@@ -57,8 +53,6 @@ function fetchAccessTokenByOAuth() {
       document.getElementById('post-publish-status').innerHTML = 'Failed to fetch access token. Please try again!';
       console.error('Failed to fetch access token - ' + err);
     }
-
-  return access_token;
 }
 
 function getAccessTokenFromLocalStorage() {
@@ -68,7 +62,7 @@ function getAccessTokenFromLocalStorage() {
 // If the user was just redirected from authenticating, the urls hash will
 // contain the access token.
 function isAuthenticated() {
-  return !!getAccessTokenFromLocalStorage();
+  return !!getAccessToken();
 }
 
 // Render a file to #file
@@ -269,6 +263,7 @@ localforage.getItem('draftpost', function(err,val){
 if(isAuthenticated()) {
   document.getElementById("logout_btn").style.display = "inline";
 } else {
+  openModal();
   fetchAccessTokenByOAuth();
 }
 
