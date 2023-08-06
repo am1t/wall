@@ -17,7 +17,7 @@ function getAccessToken() {
   }
 
   fetchAccessTokenByOAuth();
-  return window.location = "/scribe";
+  return true;
 }
 
 function logOut() {
