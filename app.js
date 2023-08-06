@@ -176,6 +176,8 @@ editor.on(document.getElementById('file-contents'), 'input', function(){
 // Restore draft posts from local browser storage
 localforage.getItem('draftpost', function(err,val){
   var fileContainer = document.getElementById("file-contents");
+  fileContainer.style.display = "block";
+  fileContainer.innerHTML = '';
   if(val && val.body) {
     fileContainer.innerHTML = val.body;
     document.getElementById('markdown-content').value = val.bodymd;
