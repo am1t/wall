@@ -25,7 +25,8 @@ function getAccessToken() {
 
 // Parses the url and gets the access token if it is in the urls hash
 function getAccessCodeFromUrl() {
-  return parseQueryString(window.location.hash).access_token;
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('code');
 }
 
 function logOut() {
