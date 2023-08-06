@@ -1,4 +1,3 @@
-var client_id = "https://am1t.github.io/scribe";
 var markdownEditor = document.querySelector(".markdown");
 var editor = new MediumEditor('.editable',
       { placeholder: false,
@@ -33,7 +32,7 @@ const fetchAccessTokenByOAuth = async () => {
       const code = urlParams.get('code');
       var formBody = new URLSearchParams();
       formBody.append("code", code);
-      formBody.append("client_id", client_id);
+      formBody.append("client_id", "https://am1t.github.io/scribe");
       formBody.append("grant_type", "authorization_code");
     	const response = await fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/indieauth/token", {
         method: "POST",
@@ -47,7 +46,6 @@ const fetchAccessTokenByOAuth = async () => {
       console.log("Logged in as " + json.profile.name);
       localStorage.setItem("access_token", json.access_token);
       closeModal();
-      resetEditor();
       window.location = window.location.href.split("?")[0];
     } catch (err) {
       document.getElementById('post-publish-status').innerHTML = 'Failed to fetch access token. Please try again!';
@@ -65,89 +63,8 @@ function isAuthenticated() {
   return !!getAccessToken();
 }
 
-// Render a file to #file
-function renderFile(file) {
-  var fileContainer = document.getElementById("file-contents");
-  fileContainer.style.display = "block";
-  fileContainer.innerHTML = '';
-  if(file){
-    file.fileBlob.text().then(function(text){
-      fileContainer.innerHTML = marked(text);
-    });
-  }
-
-  fileContainer.focus();
-  
-  hidePageSection('authed');
-  hidePageSection('pre-auth');
-}
-
-// Render a list of items to #files
-function renderItems(items) {
-  var filesContainer = document.getElementById("files");
-  filesContainer.innerHTML = '';
-  items.forEach(function(item) {
-    var li = document.createElement("li");
-    if (item[".tag"] === "folder") {
-      li.innerHTML =
-        "<a href='#folder=" +
-        encodeURIComponent(item.path_display) +
-        "'>" +
-        item.name +
-        "</a>";
-    } else if (item[".tag"] === "file") {
-      li.innerHTML =
-        "<a href='/#file=" +
-        encodeURIComponent(item.path_display) +
-        "'>" +
-        item.name +
-        "</a>";
-    }
-
-    filesContainer.appendChild(li);
-  });
-}
-
-function validatePath(path) {
-  path = path.startsWith('/') ? path : '/' + path;
-  path += path.endsWith('/') ? '' : '/';
-
-  return path;
-};
-
-function getPostPath() {
-  return validatePath(localStorage.getItem("wall-post-path"));
-}
-
-function getPostFileName() {
-  return Date.now() + '.md';
-}
-
-function getPostMetadata() {
-  var metadata = '';
-  var titleMetadata = document.getElementById('post-title').value;
-  var tagsMetadata = document.getElementById('post-tags').value;
-  if (titleMetadata) {
-    metadata = metadata + 'title : ' +  document.getElementById('post-title').value + '\n';
-  }
-  if (tagsMetadata) {
-    metadata = metadata + 'tags : ' + document.getElementById('post-tags').value + '\n';
-  }
-  let today = new Date();
-  metadata += 'date : ' + today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() +
-      ' ' + today.getHours() + ':' + today.getMinutes() + '\n';
-  return metadata;
-}
-
 function getPostBody() {
   return document.getElementById('markdown-content').value; 
-}
-
-function getContent() {
-  var metadata = getPostMetadata();
-  var content = getPostBody();
-
-  return [metadata, content].filter(value => !!value).join('\n');
 }
 
 // This example keeps both the authenticate and non-authenticated setions
@@ -213,8 +130,6 @@ function publishToMb() {
   });
 }
 
-renderFile();
-
 /* autosave loop */
 var autosaveTimeout = false;
 function saveContent() {
@@ -262,9 +177,6 @@ localforage.getItem('draftpost', function(err,val){
 
 if(isAuthenticated()) {
   document.getElementById("logout_btn").style.display = "inline";
-} else {
-  openModal();
-  fetchAccessTokenByOAuth();
 }
 
 // Export the content in markdown and save to local
@@ -316,6 +228,5 @@ function openModal() {
 function closeModal() {
   hidePageSection('pre-auth');
   hidePageSection('authed');
-  hidePageSection('folder');
   document.getElementById('modal').classList.remove('opened');
 }
