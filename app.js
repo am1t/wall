@@ -205,10 +205,12 @@ localforage.getItem('draftpost', function(err,val){
     editor.setContent(val.body);
     document.getElementById("post-status").innerHTML = "Opened last saved draft..";
     document.getElementById("file-contents").focus();
+    saveContent();
   } 
 });
 
 if(isAuthenticated()) {
+  document.getElementById("publish_btn").textContent = "Publish";
   document.getElementById("logout_btn").style.display = "inline";
 }
 

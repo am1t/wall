@@ -19,7 +19,7 @@
       <div class="toolbar-right">
         <button class="btn" id="new_btn" onclick="resetEditor()">New</button>
         <button class="btn" id="export_btn" onclick="saveLocally()">Export</button>
-        <button class="btn" id="publish_btn" onclick="openModal()">Publish</button>
+        <button class="btn" id="publish_btn" onclick="openModal()">Sign in</button>
         <button class="btn" id="logout_btn" onclick="logOut()" style="display:none;">Logout</button>
       </div>      
       <div class="clear"></div>
@@ -33,9 +33,9 @@
         <div id="meta-form" class="modal-body">
           <input type="text" name="title" id="post-title" placeholder="Title for the post" size="400" /><br>
           <input type="text" name="tags" id="post-tags" placeholder="Tags, a single tag only" size="400" /><br>
-          <input type="checkbox" name="draft" id="post-draft"><label for="draft" id="post-draft">Publish as draft</label>
+          <label id="post-draft"><input type="checkbox" name="draft" id="post-draft">Save as draft</label>
           <div class="modal-footer">
-            <a href="#" class="publishBtn" onclick="publishToMb()">Publish now</a>
+            <a href="#" class="publishBtn" onclick="publishToMb()">Post Now</a>
           </div>
         </div>
         <div id="pre-auth" class="modal-body" style="display:none;">
