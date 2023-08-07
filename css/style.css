@@ -1,11 +1,13 @@
 :root {
     --font-color: #373737;
     --bg-color: #fff;
+    --meta-color: #888;
 }
   
 [data-theme="dark"] {
     --font-color: #f3f3f3;
     --bg-color: #373737;
+    --meta-color: #eee;
 }
 
 html {
@@ -15,6 +17,13 @@ html {
     color: var(--font-color);
     background-color: var(--bg-color);
 }
+
+body {
+    width: 100%;
+    display: block;
+    margin: 8px;
+}
+
 div{
     max-width: 80%;
     margin: 0 auto;
@@ -71,12 +80,12 @@ blockquote{
     font-weight: 300;
     text-decoration: none;
     text-align: center;
-    border: 0.5px #888 solid;
-    color: #888;
+    border: 0.5px var(--meta-color) solid;
+    color: var(--meta-color);
     vertical-align: middle;
     cursor: pointer;
     font-family: 'Roboto Slab', serif;
-    opacity: 0.3;
+    opacity: 0.5;
     transition: all .3s ease-in-out;
 }
 
@@ -225,4 +234,22 @@ input[type="text"]#post-path-input{
     margin-right: 20px;
     font-size: 16px;
     color: #888;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        --font-color: #f3f3f3;
+        --bg-color: #373737;
+        --meta-color: #eee;
+    }
+}
+
+@media screen and (max-width: 415px) {
+    body {
+        font-size: 18px;
+    }
+
+    #new_btn, #export_btn, #post-status, #post-cc {
+        display: none;
+    }
 }
