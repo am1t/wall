@@ -43,7 +43,7 @@ const fetchAccessTokenByOAuth = async () => {
       const code = urlParams.get('code');
       var formBody = new URLSearchParams();
       formBody.append("code", code);
-      formBody.append("client_id", "https://am1t.github.io/scribe");
+      formBody.append("client_id", "https://scribe.amitg.net");
       formBody.append("grant_type", "authorization_code");
     	const response = await fetch("https://mb-cors-proxy-58f00b0983b3.herokuapp.com/https://micro.blog/indieauth/token", {
         method: "POST",
@@ -242,7 +242,7 @@ function resetEditor() {
   localforage.setItem('draftpost', {});
 
   document.getElementById("file-contents").focus();
-  window.location.replace("/scribe");
+  window.location.replace("/");
 }
 
 // Add overlay modal for capturing title/tags
@@ -254,7 +254,7 @@ function openModal() {
   } else {
     hidePageSection("meta-form");
     showPageSection("pre-auth");
-    var authUrl = "https://micro.blog/indieauth/auth?client_id=https://am1t.github.io/scribe&scope=create&state=abcd1234&response_type=code&redirect_uri=https://am1t.github.io/scribe"
+    var authUrl = "https://micro.blog/indieauth/auth?client_id=https://scribe.amitg.net&scope=create&state=abcd1234&response_type=code&redirect_uri=https://scribe.amitg.net"
     document.getElementById("authlink").href = authUrl;
   }    
 }
