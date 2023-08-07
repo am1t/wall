@@ -242,6 +242,10 @@ input[type="text"]#post-path-input{
         --bg-color: #373737;
         --meta-color: #eee;
     }
+
+    .modal-dialog {
+        color: var(--bg-color);
+    }
 }
 
 @media screen and (max-width: 415px) {
