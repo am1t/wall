@@ -199,13 +199,11 @@ editor.on(document.getElementById('file-contents'), 'input', function(){
 // Restore draft posts from local browser storage
 localforage.getItem('draftpost', function(err,val){
   if(val && val.body) {
-    var fileContainer = document.getElementById("file-contents");
+    //var fileContainer = document.getElementById("file-contents");
     //fileContainer.innerHTML = val.body;
     editor.setContent(val.body);
-    document.getElementById('markdown-content').value = val.bodymd;
     document.getElementById("post-status").innerHTML = "Opened last saved draft..";
-    fileContainer.focus();
-    fileContainer.setSelectionRange(fileContainer.innerHTML.length,fileContainer.innerHTML.length);
+    document.getElementById("file-contents").focus();
     saveContent();
   } 
 });
