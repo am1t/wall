@@ -140,6 +140,25 @@ function publishToMb() {
   });
 }
 
+// Render a file to #file
+function renderFile(file) {
+  var fileContainer = document.getElementById("file-contents");
+  fileContainer.style.display = "block";
+  fileContainer.innerHTML = '';
+  if(file){
+    file.fileBlob.text().then(function(text){
+      fileContainer.innerHTML = marked(text);
+    });
+  }
+
+  fileContainer.focus();
+  
+  hidePageSection('authed');
+  hidePageSection('pre-auth');
+}
+
+renderFile();
+
 /* autosave loop */
 var autosaveTimeout = false;
 function saveContent() {
@@ -176,15 +195,13 @@ editor.on(document.getElementById('file-contents'), 'input', function(){
 
 // Restore draft posts from local browser storage
 localforage.getItem('draftpost', function(err,val){
-  var fileContainer = document.getElementById("file-contents");
-  fileContainer.style.display = "block";
-  fileContainer.innerHTML = '';
   if(val && val.body) {
+    var fileContainer = document.getElementById("file-contents");
     fileContainer.innerHTML = val.body;
     document.getElementById('markdown-content').value = val.bodymd;
     document.getElementById("post-status").innerHTML = "Opened last saved draft..";
+    fileContainer.focus();
   } 
-  fileContainer.focus();
 });
 
 if(isAuthenticated()) {
