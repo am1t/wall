@@ -259,3 +259,14 @@ input[type="text"]#post-path-input{
         left: inherit;
     }
 }
+
+@media screen and (max-width: 1000px) {
+    #new_btn, #export_btn, #post-cc {
+        display: none;
+    }
+
+    .modal-dialog {
+        margin-left: inherit;
+        left: inherit;
+    }
+}
