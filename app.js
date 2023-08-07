@@ -202,7 +202,6 @@ localforage.getItem('draftpost', function(err,val){
     //var fileContainer = document.getElementById("file-contents");
     //fileContainer.innerHTML = val.body;
     editor.setContent(val.body);
-    document.getElementById('markdown-content').value = val.bodymd;
     document.getElementById("post-status").innerHTML = "Opened last saved draft..";
     document.getElementById("file-contents").focus();
     saveContent();
