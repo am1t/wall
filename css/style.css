@@ -169,7 +169,7 @@ blockquote{
     color: #333;
 }
 .publishBtn {
-    background: mediumseagreen;
+    background: #337ab7;
     border-radius: 3px;
     color: #fff;
     display: inline-block;
@@ -219,7 +219,8 @@ input[type="text"]#post-path-input{
     margin:0 0 0 -15px;
 }
 
-#post-draft {
+#post-draft,
+#post-draft-label {
     width: auto;
     margin-right: 20px;
     font-size: 16px;
