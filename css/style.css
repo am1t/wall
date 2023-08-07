@@ -136,7 +136,7 @@ blockquote{
     padding: 20px;
 }
 .modal-body input{
-    width:600px;
+    width:80%;
     font-family: 'Roboto Slab';
     padding:20px 0;
     border: none;
@@ -249,7 +249,12 @@ input[type="text"]#post-path-input{
         font-size: 18px;
     }
 
-    #new_btn, #export_btn, #post-status, #post-cc {
+    #new_btn, #export_btn, #post-status, #post-cc, #post-wc {
         display: none;
+    }
+
+    .modal-dialog {
+        margin-left: inherit;
+        left: inherit;
     }
 }
