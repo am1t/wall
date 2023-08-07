@@ -132,9 +132,10 @@ function publishToMb() {
     } else {
       redirectUrl = json.url;
     }
-    closeModal();
-    resetEditor();
-    window.location = redirectUrl;
+    setTimeout(function() {
+      resetEditor();
+      window.location.replace(redirectUrl);
+    }, 5000);
   })
   .catch((err) => {
     document.getElementById('post-publish-status').innerHTML = 'Failed to publish the post. Please try again!';
