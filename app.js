@@ -17,7 +17,7 @@ function getAccessToken() {
 
   if (getAccessCodeFromUrl()) {
     fetchAccessTokenByOAuth();
-    return (window.location = window.location.href.split("?")[0]);
+    return getAccessTokenFromLocalStorage();
   }
 
   return null;
@@ -56,6 +56,7 @@ const fetchAccessTokenByOAuth = async () => {
       console.log("Logged in as " + json.profile.name);
       localStorage.setItem("access_token", json.access_token);
       closeModal();
+      window.location = window.location.href.split("?")[0]
     } catch (err) {
       document.getElementById('post-publish-status').innerHTML = 'Failed to fetch access token. Please try again!';
       console.error('Failed to fetch access token - ' + err);
