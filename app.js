@@ -56,7 +56,8 @@ const fetchAccessTokenByOAuth = async () => {
     	const json = await response.json();
       console.log("Logged in as " + json.profile.name);
       localStorage.setItem("access_token", json.access_token);
-      resetEditor();
+      closeModal();
+      document.getElementById("file-contents").focus();
       window.location.replace(window.location.href.split("?")[0]);
     } catch (err) {
       document.getElementById('post-publish-status').innerHTML = 'Failed to fetch access token. Please try again!';
