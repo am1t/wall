@@ -247,6 +247,7 @@ input[type="text"]#post-path-input{
 @media screen and (max-width: 415px) {
     body {
         font-size: 18px;
+        margin: 8px 0;
     }
 
     #new_btn, #export_btn, #post-status, #post-cc, #post-wc {
