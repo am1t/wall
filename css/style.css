@@ -247,6 +247,14 @@ input[type="text"]#post-path-input{
     .modal-dialog {
         color: var(--bg-color);
     }
+
+    a {
+        color: #FFB029;
+    }
+
+    #post-title, #post-publish-status{
+        color: var(--bg-color);
+    }
 }
 
 @media screen and (max-width: 415px) {
